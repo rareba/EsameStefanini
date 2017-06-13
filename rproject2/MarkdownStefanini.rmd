@@ -23,8 +23,8 @@ modPG <- '
 data {
 int N;
 int Y[N];
-int alpha0;
-int beta0;
+int alpha1;
+int beta1;
 }
 transformed data{
 
@@ -38,7 +38,7 @@ transformed parameters {
 
 }
 model {
-Lambda ~ gamma(alpha0,beta0);
+Lambda ~ gamma(alpha1,beta1);
 Y ~ poisson(Lambda);
 }
 '
@@ -53,25 +53,22 @@ c(iniTime = iniTime, endTime = endTime)
 2) Ottieni un campione simulato dalla a-posteriori
 
 ```{r}
-#SAMPLING E GENERAZIONE DELLE CATENE A POSTERIORI
 library(rstudioapi)
 system.time(
   fit <<- sampling(mod,
                   data = data,
                   pars = c("Lambda"), #a noi interessa capire la distribuzione di Lambda, non di Y. 
-                                      #Perchè dopo che si campiona lambda si capisce come distribuisce la Y
+#Perchè dopo che si campiona lambda si capisce come distribuisce la Y
                   chains = 4,
                   iter = 25000,
                   warmup = 10000,
                   thin = 5,
                   cores = 4,
-                  seed = 1997,
+                  seed = 19861986,
                   control = list(max_treedepth = 10,
                                 adapt_delta = 0.8)
   )
 )
-
-testModel <- stan(model_code = modPG, data = data, iter = 100, chains = 4)
 ```
 
 3) Esplora le diagnostiche di output e discuti i risultati
@@ -81,17 +78,17 @@ require(ggmcmc)
 outSim <- ggs(fit)
 print(outSim)
 
-###traceplots
+### Trace
 require(ggthemes)
 ggs_traceplot(outSim) + theme_fivethirtyeight()
 
 ### Densita
 ggs_density(outSim) + theme_solarized(light = TRUE)
 
-### R cappello ovvero diagnostica di Gelman
+### Diagnostica di Gelman
 ggs_Rhat(outSim) + xlab("R_hat")
 
-### diagnostica di Geweke (solo per normali standardizzate)
+### diagnostica di Geweke
 ggs_geweke(outSim)
 
 ### diagnostica con Caterpillar
@@ -99,9 +96,6 @@ ggs_caterpillar(outSim)
 
 #intervalli di credibilit?
 ci(outSim)
-
-# sintesi per coppie di parametri
-#ggs_pairs(outSim, lower = list(continuous = "density"))
 
 # riassunti numeri e diagnostica
 summary(fit)
@@ -117,7 +111,8 @@ gg_pairs non funziona perchè servono almeno due parametri (in questo caso abbiam
 La funzione summary() aiuta a monitorare numericamente quanto detto fin'ora: vale a dire che le catene si sovrappongono e non ci sono problemi con il modello.
 
 5) Ottieni la distribuzione prededittiva della futura osservazione con un campione di dimensione 10k.
-```{r, echo=FALSE}
+```{r}
+
 modPGp <- '
 data {
 int N;
@@ -143,25 +138,23 @@ Y_predict = poisson_rng(Lambda);
 '
 iniTime <- date()
 mod <- stan_model(model_code = modPGp)
-endTime <- date();c(iniTime = iniTime, endTime = endTime)
+endTime <- date();
+c(iniTime = iniTime, endTime = endTime)
 
-#campionamento
 system.time(
   fit <<- sampling(mod,
                   data = data,
                   pars = c("Lambda", "Y_predict"),
                   chains = 1,
                   iter = 10000,
-                  warmup = 1000,
-                  thin = 5,
+                  warmup = 0,
+                  thin = 1,
                   cores = 4,
-                  seed = 1997,
+                  seed = 19861986,
                   control = list(max_treedepth = 10,
                   adapt_delta = 0.8)
   )
 )
-
-testModel2 <- stan(model_code = modPGp, data = data, iter = 10000, chains = 1)
 ```
 
 ```{r, echo=FALSE}
@@ -193,11 +186,10 @@ ggs_pairs(outSim, lower = list(continuous = "density"))
 
 # riassunti numeri e diagnostica
 summary(fit)
-
-#    Riassumi le sue caratteristiche.
-
 ```
+Riassumo le caratteristiche della distribuzione predittiva
 
+#scrivere
 
 6) Confronta i risultati ottenuti via simulazione MCMC con i risultati esatti sopra riportati
 

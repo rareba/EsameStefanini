@@ -55,7 +55,7 @@ system.time(
                   warmup = 10000,
                   thin = 5,
                   cores = 4,
-                  seed = 1997,
+                  seed = 19861986,
                   control = list(max_treedepth = 10,
                                 adapt_delta = 0.8)
   )
@@ -142,7 +142,7 @@ system.time(
                   warmup = 1000,
                   thin = 5,
                   cores = 4,
-                  seed = 1997,
+                  seed = 19861986,
                   control = list(max_treedepth = 10,
                   adapt_delta = 0.8)
   )
