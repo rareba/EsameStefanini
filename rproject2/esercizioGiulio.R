@@ -16,8 +16,8 @@ modPG <- '
 data {
 int N;
 int Y[N];
-int alpha0;
-int beta0;
+int alpha1;
+int beta1;
 }
 transformed data{
 
@@ -31,7 +31,7 @@ transformed parameters {
 
 }
 model {
-Lambda ~ gamma(alpha0,beta0);
+Lambda ~ gamma(alpha1,beta1);
 Y ~ poisson(Lambda);
 }
 '
