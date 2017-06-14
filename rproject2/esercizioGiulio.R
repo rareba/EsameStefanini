@@ -10,6 +10,7 @@ beta1 <- beta0 + N
 
 # 1) Implementazione del modello
 library(rstan)
+
 data <- list(N, Y)
 
 modPG <- '
@@ -140,15 +141,13 @@ system.time(
                   chains = 1,
                   iter = 10000,
                   warmup = 1000,
-                  thin = 5,
+                  thin = 1,
                   cores = 4,
                   seed = 19861986,
                   control = list(max_treedepth = 10,
                   adapt_delta = 0.8)
   )
 )
-
-testModel2 <- stan(model_code = modPGp, data = data, iter = 10000, chains = 1)
 
 require(ggmcmc)
 outSim <- ggs(fit)
@@ -176,11 +175,15 @@ ci(outSim)
 # sintesi per coppie di parametri
 ggs_pairs(outSim, lower = list(continuous = "density"))
 
-# riassunti numeri e diagnostica
-summary(fit)
-
 #    Riassumi le sue caratteristiche.
-
+median(outSim$value)
+mean(outSim$value)
+min(outSim$value)
+max(outSim$value)
+range(outSim$value)
+var(outSim$value)
+sd(outSim$value)
+summary(fit)
 
 
 # 6) Confronta i risultati ottenuti via simulazione MCMC con i risultati esatti sopra riportati

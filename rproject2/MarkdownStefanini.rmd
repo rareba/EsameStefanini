@@ -1,8 +1,8 @@
 ---
 title: "Esercizio Bayesian"
 author: "Giulio Vannini"
-date: "13 giugno 2017"
-output: pdf_document
+date: "14 giugno 2017"
+output: html_document
 ---
 
 Dati Forniti:
@@ -181,12 +181,22 @@ ci(outSim)
 # sintesi per coppie di parametri
 ggs_pairs(outSim, lower = list(continuous = "density"))
 
-# riassunti numeri e diagnostica
-summary(fit)
 ```
-Riassumo le caratteristiche della distribuzione predittiva
 
-#scrivere
+Riassumo le caratteristiche della distribuzione predittiva:
+
+```{r, echo=FALSE}
+#    Riassumi le sue caratteristiche.
+median(outSim$value)
+mean(outSim$value)
+min(outSim$value)
+max(outSim$value)
+range(outSim$value)
+var(outSim$value)
+sd(outSim$value)
+summary(fit)
+summary(outSim)
+```
 
 6) Confronta i risultati ottenuti via simulazione MCMC con i risultati esatti sopra riportati
 
@@ -200,4 +210,5 @@ ggs_histogram(outSim, family = "Y_predict") + geom_vline(xintercept = MailsOsser
 Mediamente arrivano 5,6 email al giorno. 
 Il valore sta dentro alla distribuzione che risulta dal modello predittivo.
 Si può dire che ci si può aspettare fra le 5 e le 6 email al giorno.
-Guardando anche i valori osservati si può dire che in generale non ci sono "fughe" verso valori improbabili
+Guardando anche i valori osservati si può dire che in generale non ci sono "fughe" verso valori improbabili.
+Direi che il modello è accettabile.
