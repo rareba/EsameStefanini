@@ -86,6 +86,9 @@ ggs_traceplot(outSim) + theme_fivethirtyeight()
 ### Densita
 ggs_density(outSim) + theme_solarized(light = TRUE)
 
+### R cappello ovvero diagnostica di Gelman
+ggs_Rhat(outSim) + xlab("R_hat") 
+
 ### diagnostica di Geweke
 ggs_geweke(outSim)
 
@@ -136,8 +139,7 @@ Y_predict = poisson_rng(Lambda);
 '
 iniTime <- date()
 mod <- stan_model(model_code = modPGp)
-endTime <- date();
-c(iniTime = iniTime, endTime = endTime)
+endTime <- date();c(iniTime = iniTime, endTime = endTime)
 
 system.time(
   fit <<- sampling(mod,
@@ -166,6 +168,9 @@ ggs_traceplot(outSim) + theme_fivethirtyeight()
 
 ### Densita
 ggs_density(outSim) + theme_solarized(light = TRUE)
+
+### R cappello ovvero diagnostica di Gelman
+#ggs_Rhat(outSim) + xlab("R_hat") - servono almeno 2 catene per eseguirlo
 
 ### diagnostica di Geweke (solo per normali standardizzate)
 ggs_geweke(outSim)
@@ -201,11 +206,15 @@ summary(outSim)
 ```{r, echo=FALSE}
 outSim = ggs(fit)
 MailsOsservate <- c(mean(Y))
-ggs_histogram(outSim, family = "Y_predict") + geom_vline(xintercept = MailsOsservate, color = "red") + geom_vline(xintercept = Y, color = "blue")
+ggs_histogram(outSim, family = "Y_predict") + geom_vline(xintercept = MailsOsservate, color = "red") + geom_vline(xintercept = Y, color = "blue") + geom_vline(xintercept = mean(outSim$value), color = "green")
 
 ```
 
-Mediamente arrivano 5,6 email al giorno. 
+Riguardo al grafico finale:
+Blue - Valori di Y osservati
+Rosso - Media dei valori di Y osservati
+Verde - Media di Y_predict
+Mediamente è stato osservato l'arrivo di 5,6 email al giorno. 
 Il valore sta dentro alla distribuzione che risulta dal modello predittivo.
 Si può dire che ci si può aspettare fra le 5 e le 6 email al giorno.
 Guardando anche i valori osservati si può dire che in generale non ci sono "fughe" verso valori improbabili.

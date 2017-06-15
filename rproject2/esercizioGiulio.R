@@ -190,7 +190,7 @@ summary(fit)
 
 outSim = ggs(fit)
 MailsOsservate <- c(mean(Y))
-ggs_histogram(outSim, family = "Y_predict") + geom_vline(xintercept = MailsOsservate, color = "red") + geom_vline(xintercept = Y, color = "blue")
+ggs_histogram(outSim, family = "Y_predict") + geom_vline(xintercept = MailsOsservate, color = "red") + geom_vline(xintercept = Y, color = "blue") + geom_vline(xintercept = mean(outSim$value), color = "green")
 
 #    Mediamente arrivano 5,6 email al giorno. 
 #    Il valore sta dentro alla distribuzione che risulta dal modello predittivo.
