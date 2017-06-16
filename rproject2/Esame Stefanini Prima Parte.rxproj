@@ -21,5 +21,5 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Rules\rtvs.rules.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Rules\rtvs.rules.props') And !Exists('$(MSBuildUserExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Rules\rtvs.rules.props')" />
   <Import Project="$(MSBuildUserExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Targets\Microsoft.R.targets" Condition="Exists('$(MSBuildUserExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Targets\Microsoft.R.targets')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Targets\Microsoft.R.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Targets\Microsoft.R.targets') And !Exists('$(MSBuildUserExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\RTVS\Targets\Microsoft.R.targets')" />
-  <Import Project="rproject2.InMemory.Targets" Condition="Exists('rproject2.InMemory.Targets')" />
+  <Import Project="Esame Stefanini Prima Parte.InMemory.Targets" Condition="Exists('Esame Stefanini Prima Parte.InMemory.Targets')" />
 </Project>
